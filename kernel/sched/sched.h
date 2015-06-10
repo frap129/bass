@@ -701,8 +701,22 @@ extern unsigned int sched_init_task_load_pelt;
 extern unsigned int sched_init_task_load_windows;
 extern void fixup_nr_big_small_task(int cpu);
 
-u64 scale_load_to_cpu(u64 load, int cpu);
 unsigned int max_task_load(void);
+
+/*
+ * 'load' is in reference to "best cpu" at its best frequency.
+ * Scale that in reference to a given cpu, accounting for how bad it is
+ * in reference to "best cpu".
+ */
+static inline u64 scale_load_to_cpu(u64 task_load, int cpu)
+{
+	struct rq *rq = cpu_rq(cpu);
+
+	task_load *= (u64)rq->load_scale_factor;
+	task_load /= 1024;
+
+	return task_load;
+}
 
 static inline void
 inc_cumulative_runnable_avg(struct rq *rq, struct task_struct *p)
