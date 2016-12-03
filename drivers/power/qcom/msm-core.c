@@ -240,7 +240,8 @@ static __ref int do_sampling(void *data)
 		if (!poll_ms)
 			continue;
 
-		schedule_delayed_work(&sampling_work,
+		queue_delayed_work(system_power_efficient_wq,
+			&sampling_work,
 			msecs_to_jiffies(poll_ms));
 	}
 	return 0;
