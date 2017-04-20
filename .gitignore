@@ -32,6 +32,11 @@ modules.builtin
 *.lzo
 *.patch
 *.gcno
+modules.builtin
+Module.symvers
+*.dwo
+*.su
+*.c.[012]*.*
 
 #
 # Top-level generic files
@@ -96,3 +101,5 @@ x509.genkey
 *.rej
 *.save*
 *.old
+out
+anykernel
