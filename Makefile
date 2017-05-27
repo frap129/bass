@@ -324,7 +324,7 @@ include $(srctree)/scripts/Kbuild.include
 
 
 # Set optimization flags for gcc
-FLAGS := -mtune=cortex-a7 -O3 -fmodulo-sched -fmodulo-sched-allow-regmoves -fmodulo-sched -fmodulo-sched-allow-regmoves -fgraphite-identity -floop-block -floop-interchange -floop-strip-mine -ftree-loop-linear -ftree-loop-distribution -Wno-maybe-uninitialized -Wno-misleading-indentation -Wno-array-bounds -Wno-shift-overflow
+FLAGS := -mtune=cortex-a7 -O2 -fmodulo-sched -fmodulo-sched-allow-regmoves -fmodulo-sched -fmodulo-sched-allow-regmoves -fgraphite-identity -floop-block -floop-interchange -floop-strip-mine -ftree-loop-linear -ftree-loop-distribution -Wno-maybe-uninitialized -Wno-misleading-indentation -Wno-array-bounds -Wno-shift-overflow
 
 # Make variables (CC, etc...)
 
@@ -579,7 +579,7 @@ all: vmlinux
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
 else
-KBUILD_CFLAGS	+= -O3
+KBUILD_CFLAGS	+= -O2
 endif
 
 # Needed to unbreak GCC 7.x and above
