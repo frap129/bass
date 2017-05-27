@@ -176,6 +176,7 @@ extern void __iomem *wdt_timer_get_timer0_base(void);
 
 static int gen_wdt_bark(const char *val, struct kernel_param *kp)
 {
+#ifdef CONFIG_MSM_WATCHDOG_V2
 	static void __iomem *msm_tmr0_base;
 	msm_tmr0_base = wdt_timer_get_timer0_base();
 
@@ -184,6 +185,7 @@ static int gen_wdt_bark(const char *val, struct kernel_param *kp)
 	__raw_writel(0x31F3, msm_tmr0_base + WDT0_BARK_TIME);
 	__raw_writel(5 * 0x31F3, msm_tmr0_base + WDT0_BITE_TIME);
 	__raw_writel(1, msm_tmr0_base + WDT0_EN);
+#endif
 	return 0;
 }
 module_param_call(gen_wdt_bark, gen_wdt_bark, param_get_bool,
@@ -191,6 +193,7 @@ module_param_call(gen_wdt_bark, gen_wdt_bark, param_get_bool,
 
 static int gen_wdt_bite(const char *val, struct kernel_param *kp)
 {
+#ifdef CONFIG_MSM_WATCHDOG_V2
 	static void __iomem *msm_tmr0_base;
 	msm_tmr0_base = wdt_timer_get_timer0_base();
 	__raw_writel(0, msm_tmr0_base + WDT0_EN);
@@ -198,6 +201,7 @@ static int gen_wdt_bite(const char *val, struct kernel_param *kp)
 	__raw_writel(5 * 0x31F3, msm_tmr0_base + WDT0_BARK_TIME);
 	__raw_writel(0x31F3, msm_tmr0_base + WDT0_BITE_TIME);
 	__raw_writel(1, msm_tmr0_base + WDT0_EN);
+#endif
 	return 0;
 }
 module_param_call(gen_wdt_bite, gen_wdt_bite, param_get_bool,
