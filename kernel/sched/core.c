@@ -1512,7 +1512,9 @@ int sched_set_window(u64 window_start, unsigned int window_size)
 			rq->curr->ravg.mark_start = wallclock;
 			rq->curr_runnable_sum += rq->curr->ravg.partial_demand;
 		}
+#ifdef CONFIG_SCHED_HMP
 		fixup_nr_big_small_task(cpu);
+#endif
 	}
 
 	for_each_online_cpu(cpu) {
