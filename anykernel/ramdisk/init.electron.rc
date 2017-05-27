@@ -1,6 +1,9 @@
 # Start Electron changes
 import /init.spectrum.rc
 
+on post-fs
+    setprop ro.sys.sdcardfs true
+
 on property:sys.boot_completed=1
     # Disable some wakelocks
     write /sys/module/wakeup/parameters/enable_wlan_rx_wake_ws 0
