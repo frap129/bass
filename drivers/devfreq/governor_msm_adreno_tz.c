@@ -19,7 +19,9 @@
 #include <linux/io.h>
 #include <linux/ftrace.h>
 #include <linux/msm_adreno_devfreq.h>
-#include <linux/display_state.h>
+#ifdef CONFIG_STATE_NOTIFIER
+#include <linux/state_notifier.h>
+#endif
 #include <soc/qcom/scm.h>
 #include "governor.h"
 
@@ -57,7 +59,7 @@ static void do_partner_stop_event(struct work_struct *work);
 static void do_partner_suspend_event(struct work_struct *work);
 static void do_partner_resume_event(struct work_struct *work);
 
-/* Display and suspend state booleans */ 
+/* Display and suspend state booleans */
 static bool display_on;
 static bool suspended = false;
 
@@ -336,7 +338,7 @@ static int tz_suspend(struct devfreq *devfreq)
 	struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
 	unsigned int scm_data[2] = {0, 0};
 	__secure_tz_reset_entry2(scm_data, sizeof(scm_data), priv->is_64);
-	display_on = is_display_on();
+	display_on = !state_suspended;
 	suspended = true;
 
 	priv->bin.total_time = 0;
@@ -364,13 +366,13 @@ static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 		break;
 
 	case DEVFREQ_GOV_SUSPEND:
-		display_on = is_display_on();
+		display_on = !state_suspended;
 		suspended = true;
 		result = tz_suspend(devfreq);
 		break;
 
 	case DEVFREQ_GOV_RESUME:
-		display_on = is_display_on();
+		display_on = !state_suspended;
 		suspended = false;
 		result = tz_resume(devfreq);
 		break;
