@@ -5,6 +5,21 @@ on post-fs
     setprop ro.sys.sdcardfs true
 
 on property:sys.boot_completed=1
+    # Enable 3 cores
+    chown system system /sys/devices/system/cpu/cpu2/online
+    chown system system /sys/devices/system/cpu/cpu3/online
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 0
+
+    # Make sure idle and suspend are enabled
+    write /sys/module/lpm_levels/system/cpu1/pc/idle_enabled 1
+    write /sys/module/lpm_levels/system/cpu1/pc/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu2/pc/idle_enabled 1
+    write /sys/module/lpm_levels/system/cpu2/pc/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu3/pc/idle_enabled 1
+    write /sys/module/lpm_levels/system/cpu3/pc/suspend_enabled 1
+
     # Disable some wakelocks
     write /sys/module/wakeup/parameters/enable_wlan_rx_wake_ws 0
     write /sys/module/wakeup/parameters/enable_wlan_ctrl_wake_ws 0
