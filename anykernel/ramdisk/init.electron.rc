@@ -19,6 +19,19 @@ on property:sys.boot_completed=1
     write /sys/module/lpm_levels/system/cpu2/pc/suspend_enabled 1
     write /sys/module/lpm_levels/system/cpu3/pc/idle_enabled 1
     write /sys/module/lpm_levels/system/cpu3/pc/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu1/standalone_pc/idle_enabled 1
+    write /sys/module/lpm_levels/system/cpu1/standalone_pc/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu2/standalone_pc/idle_enabled 1
+    write /sys/module/lpm_levels/system/cpu2/standalone_pc/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu3/standalone_pc/idle_enabled 1
+    write /sys/module/lpm_levels/system/cpu3/standalone_pc/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu1/wfi/idle_enabled 1
+    write /sys/module/lpm_levels/system/cpu1/wfi/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu2/wfi/idle_enabled 1
+    write /sys/module/lpm_levels/system/cpu2/wfi/suspend_enabled 1
+    write /sys/module/lpm_levels/system/cpu3/wfi/idle_enabled 1
+    write /sys/module/lpm_levels/system/cpu3/wfi/suspend_enabled 1
+
 
     # Disable some wakelocks
     write /sys/module/wakeup/parameters/enable_wlan_rx_wake_ws 0
@@ -27,8 +40,9 @@ on property:sys.boot_completed=1
     write /sys/module/wakeup/parameters/enable_msm_hsic_ws 0
     write /sys/module/wakeup/parameters/enable_qcom_rx_wakelock_ws 0
     write /sys/module/wakeup/parameters/enable_netlink_ws 0
-    write /sys/module/wakeup/parameters/enable_ipa_ws 0
-    write /sys/module/wakeup/parameters/enable_timerfd_ws 0
+
+    # We need timerfd to remain enabled
+    write /sys/module/wakeup/parameters/enable_timerfd_ws 1
 
     # Set I/O Scheduler tweaks
     write /sys/block/mmcblk0/queue/scheduler maple
